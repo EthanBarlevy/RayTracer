@@ -15,7 +15,7 @@ public:
 	void CopyCanvas(const Canvas& canvas);
 	void Present();
 
-	void Render(Canvas& canvas, class Scene& scene, class Camera& camera);
+	void Render(Canvas& canvas, class Scene& scene, class Camera& camera, int samples = 5);
 
 	friend class Canvas;
 
