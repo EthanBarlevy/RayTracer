@@ -2,6 +2,7 @@
 #include "Ray.h"
 #include "Object.h"
 #include "Scene.h"
+#include "Camera.h"
 #include <iostream>
 
 bool Renderer::Initialize()
@@ -49,7 +50,7 @@ void Renderer::Present()
     SDL_RenderPresent(m_renderer);
 }
 
-void Renderer::Render(Canvas& canvas, Scene& scene)
+void Renderer::Render(Canvas& canvas, Scene& scene, Camera& camera)
 {
     glm::vec3 lowerLeft{ -2, -1, -1 };
     glm::vec3 eye{ 0, 0, 0 };
@@ -61,15 +62,16 @@ void Renderer::Render(Canvas& canvas, Scene& scene)
         for (int x = 0; x < canvas.GetWidth(); x++)
         {
             // get normalized (0 - 1) u, v coordinates for x and y 
-            float u = x / (float)canvas.GetWidth();
-            float v = 1 - (y / (float)canvas.GetHeight());
+            glm::vec2 point = glm::vec2{ x, y } / glm::vec2{ canvas.m_width, canvas.m_height };
 
-            // create ray 
-            glm::vec3 direction = lowerLeft + (u * right) + (v * up);
-            Ray ray{ eye, direction };
+            // flip y
+            point.y = 1.0f - point.y;
 
+            // create ray from camera
+            Ray ray = camera.PointToRay(point);
+
+            // cast ray into scene and get color
             RaycastHit raycastHit;
-
             color3 color = scene.Trace(ray, 0.01f, 1000.0f, raycastHit, 5);
 
             canvas.DrawPoint({ x, y }, color4(color, 1));
