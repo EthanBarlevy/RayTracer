@@ -38,7 +38,7 @@ color3 Scene::Trace(const Ray& ray, float min, float max, RaycastHit& hit, int d
     {
         glm::vec3 direction = glm::normalize(ray.direction);
         float t = (direction.y + 1) * 0.5f;
-        return Lerp(glm::vec3(0.5f, 0.7f, 1.0f), glm::vec3(1, 1, 1), t);
+        return Lerp(m_topColor, m_bottomColor, t);
     }
 }
 
