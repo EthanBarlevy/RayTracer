@@ -31,7 +31,7 @@ color3 Scene::Trace(const Ray& ray, float min, float max, RaycastHit& hit, int d
         }
         else
         {
-            return { 0, 0, 0 };
+            return hit.material->GetEmissive();
         }
     }
     else
